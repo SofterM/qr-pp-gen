@@ -134,7 +134,6 @@ export default function RootLayout({
       <body className={`${kanit.className} antialiased`}>
         <ThemeProvider 
           defaultTheme="system" 
-          enableSystem
           storageKey="promptpay-theme"
         >
           <div className="relative flex min-h-screen flex-col">
