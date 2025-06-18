@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>PromptPay QR Code</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    img {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>QR Code พร้อมเพย์</h1>
+  <div id="qr-container">
+    <p>กำลังโหลด QR...</p>
+  </div>
+
+  <script>
+    window.onload = async function () {
+      const phone = '0991405901'; // เปลี่ยนเป็นเบอร์พร้อมเพย์ของคุณ
+      const amount = 100;         // จำนวนเงินที่ต้องการ
+
+      try {
+        const res = await fetch(`http://localhost:3000/api/qr?id=${phone}&amount=${amount}`);
+        const data = await res.json();
+
+        if (data.success) {
+          const img = document.createElement('img');
+          img.src = data.data.qrCode; // base64 image string
+          img.alt = "PromptPay QR Code";
+          img.width = 250;
+          img.height = 250;
+
+          const container = document.getElementById("qr-container");
+          container.innerHTML = ""; // ล้างข้อความ "กำลังโหลด QR..."
+          container.appendChild(img);
+        } else {
+          document.getElementById("qr-container").innerText = "เกิดข้อผิดพลาด: " + data.error;
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("qr-container").innerText = "ไม่สามารถโหลด QR ได้";
+      }
+    }
+  </script>
+
+</body>
+</html>
